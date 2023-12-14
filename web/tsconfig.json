@@ -1,0 +1,18 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "types": [
+      "vite/client",
+      "element-plus/global",
+      "unplugin-icons/types/vue",
+      "vue/macros-global"
+    ],
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "skipLibCheck": true
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.vite-config.json" }]
+}

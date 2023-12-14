@@ -1,0 +1,73 @@
+{
+  "folders": [
+    {
+      "path": "web",
+      "name": "frontend"
+    },
+    {
+      "path": "server",
+      "name": "backend"
+    },
+    {
+      "path": ".",
+      "name": "root"
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": false,
+    "eslint.probe": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+      "html",
+      "vue",
+      "json",
+      "json5",
+      "jsonc",
+      "yaml",
+      "markdown"
+    ],
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+      "html",
+      "vue",
+      "json",
+      "json5",
+      "jsonc",
+      "yaml",
+      "markdown"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "go",
+        "request": "launch",
+        "name": "Backend",
+        "cwd": "${workspaceFolder:backend}",
+        "program": "${workspaceFolder:backend}/"
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder:frontend}",
+        "name": "Frontend",
+        "runtimeExecutable": "npm",
+        "runtimeArgs": ["run-script", "dev"]
+      }
+    ],
+    "compounds": []
+  },
+  "extensions": {
+    "recommendations": [
+      "vue.volar",
+      "antfu.iconify",
+      "antfu.unocss"
+    ]
+  }
+}
