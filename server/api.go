@@ -2,9 +2,12 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
+
+var r *gin.Engine
 
 func create[T Company | Team | Route | Driver | RoadManager | Violation | Vehicle | Station]() func(c *gin.Context) {
 	return func(c *gin.Context) {
@@ -56,7 +59,7 @@ func delete[T Company | Team | Route | Driver | RoadManager | Violation | Vehicl
 	}
 }
 func init_router() {
-	r := gin.Default()
+	r = gin.Default()
 	api := r.Group("/api")
 	{
 		api.GET("/company", get[Company]())
@@ -90,6 +93,5 @@ func init_router() {
 		api.DELETE("/vehicle", delete[Vehicle]())
 		api.DELETE("/station", delete[Station]())
 	}
-
-	r.Run(":8080")
+	r.NoRoute(gin.WrapH(http.FileServer(http.Dir("./dist/"))))
 }
