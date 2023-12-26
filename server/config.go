@@ -6,6 +6,8 @@ import (
 	"github.com/spf13/viper"
 )
 
+//TODO: add config validate method & add default config generate method
+
 func init_config() error {
 	if _, err := os.Stat("config.yaml"); err != nil {
 		if err := func() error {
