@@ -13,7 +13,9 @@
   "dependencies": {
     "@vueuse/core": "^9.3.1",
     "element-plus": "^2.2.18",
-    "vue": "^3.2.41"
+    "less": "^4.2.0",
+    "vue": "^3.2.41",
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@iconify-json/carbon": "^1.1.9",
@@ -27,7 +29,6 @@
     "eslint": "^8.25.0",
     "eslint-define-config": "^1.7.0",
     "typescript": "^4.8.4",
-    "unocss": "^0.45.30",
     "unplugin-auto-import": "^0.11.2",
     "unplugin-icons": "^0.14.12",
     "unplugin-vue-components": "^0.22.8",

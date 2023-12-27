@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"time"
 
+	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -62,16 +64,20 @@ type Station struct {
 
 var db *gorm.DB
 
-func init_db() {
-	// 连接到数据库
-	db, err := gorm.Open(mysql.Open("username:password@tcp(localhost:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"), &gorm.Config{})
+func init_db() error {
+	dbConfig := viper.GetStringMap("database")
+	dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8mb4&parseTime=True&loc=Local",
+		dbConfig["user"], dbConfig["password"],
+		dbConfig["host"], dbConfig["port"], dbConfig["name"])
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic("failed to connect to the database")
+		return err
 	}
-
-	// 创建表
-	err = db.AutoMigrate(&Company{}, &Team{}, &Route{}, &Driver{}, &RoadManager{}, &Violation{}, &Vehicle{}, &Station{})
-	if err != nil {
-		panic("failed to create tables")
+	if migrate := dbConfig["migrate"]; migrate == false {
+		return nil
 	}
+	if err = db.AutoMigrate(&RoadManager{}, &Violation{}, &Driver{}, &Route{}, &Team{}, &Company{}, &Vehicle{}, &Station{}); err != nil {
+		return err
+	}
+	return nil
 }

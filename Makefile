@@ -16,5 +16,5 @@ server:
 	&& go env -w CGO_ENABLED=0 && go env  && go mod tidy \
 	&& go build -ldflags "-B 0x$(shell head -c20 /dev/urandom|od -An -tx1|tr -d ' \n') -X main.Version=${TAGS_OPT}" -v
 
-run: build
+run: server
 	cd $(BINARY_DIR) && ./$(PROJECT_NAME) -c $(CONFIG_FILE)
