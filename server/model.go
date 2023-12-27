@@ -9,13 +9,14 @@ import (
 	"gorm.io/gorm"
 )
 
+// 公司
 type Company struct {
 	ID        uint `gorm:"primaryKey"`
 	Name      string
 	CreatedAt time.Time
-	Contact   string
 }
 
+// 车队
 type Team struct {
 	ID          uint `gorm:"primaryKey"`
 	Name        string
@@ -23,43 +24,42 @@ type Team struct {
 	ManagerName string
 }
 
+// 路线
 type Route struct {
 	ID   uint `gorm:"primaryKey"`
 	Name string
 	Team Team `gorm:"foreignKey:ID;onDelete:CASCADE"`
 }
 
+// 司机
 type Driver struct {
 	ID    uint `gorm:"primaryKey"`
 	Name  string
 	Route Route `gorm:"foreignKey:ID;onDelete:CASCADE"`
 }
 
+// 队长
 type RoadManager struct {
 	ID    uint `gorm:"primaryKey"`
 	Name  string
 	Route Route `gorm:"foreignKey:ID;onDelete:CASCADE"`
 }
 
+// 违章
 type Violation struct {
 	ID            uint    `gorm:"primaryKey"`
 	Driver        Driver  `gorm:"foreignKey:ID;onDelete:CASCADE"`
 	Vehicle       Vehicle `gorm:"foreignKey:ID;onDelete:CASCADE"`
 	Team          Team    `gorm:"foreignKey:ID;onDelete:CASCADE"`
 	Route         Route   `gorm:"foreignKey:ID;onDelete:CASCADE"`
-	Station       Station `gorm:"foreignKey:ID;onDelete:CASCADE"`
 	OccurredAt    time.Time
 	ViolationType string
 }
 
+// 车辆
 type Vehicle struct {
 	ID  uint `gorm:"primaryKey"`
 	VIN string
-}
-
-type Station struct {
-	ID   uint `gorm:"primaryKey"`
-	Name string
 }
 
 var db *gorm.DB
@@ -76,7 +76,7 @@ func init_db() error {
 	if migrate := dbConfig["migrate"]; migrate == false {
 		return nil
 	}
-	if err = db.AutoMigrate(&RoadManager{}, &Violation{}, &Driver{}, &Route{}, &Team{}, &Company{}, &Vehicle{}, &Station{}); err != nil {
+	if err = db.AutoMigrate(&RoadManager{}, &Violation{}, &Driver{}, &Route{}, &Team{}, &Company{}, &Vehicle{}); err != nil {
 		return err
 	}
 	return nil

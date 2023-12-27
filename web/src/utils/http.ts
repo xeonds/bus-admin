@@ -32,4 +32,4 @@ const useHttp = (baseUrl: string, token: string) => {
 
 const baseUrl = '/api/v1/'
 
-export const http = useHttp(baseUrl, import.meta.env.VITE_API_TOKEN)
+export const http = useHttp(baseUrl, "")
