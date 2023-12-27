@@ -4,9 +4,9 @@ export default createRouter({
   history: createWebHashHistory(),
   routes: [
     {
-      path: '/',
-      //      redirect: "/login",
-      component: () => import('@/views/Home.vue'),
+      path: "/",
+      component: () => import("@/views/Home.vue"),
+//      redirect: "/login",
     },
   ],
 })
