@@ -3,7 +3,12 @@
     <el-row>
       <el-col :span="24">
         <h1>财务</h1>
-        <el-alert title="统计结果说明" type="info" description="注意：算法仅供参考，请以实际统计量为准" show-icon />
+        <el-alert
+          title="统计结果说明"
+          type="info"
+          description="注意：算法仅供参考，请以实际统计量为准"
+          show-icon
+        />
       </el-col>
     </el-row>
     <el-row :gutter="20">
@@ -98,12 +103,12 @@
 </template>
 
 <script>
-import customerAPI from "../../api/customer";
-import productAPI from "../../api/product";
-import purchaseAPI from "../../api/purchase";
-import orderAPI from "../../api/order";
-import BarChart from "../../components/BarChart.vue";
-import PieChart from "../../components/PieChart.vue";
+import customerAPI from '../../api/customer'
+import productAPI from '../../api/product'
+import purchaseAPI from '../../api/purchase'
+import orderAPI from '../../api/order'
+import BarChart from '../../components/BarChart.vue'
+import PieChart from '../../components/PieChart.vue'
 
 export default {
   components: { BarChart, PieChart },
@@ -116,10 +121,14 @@ export default {
       orderList: [],
       purchaseList: [],
       income: {
-        labels: ["总收入", "日收入", "月收入"],
-        datasets: [{ data: [this.income_totally, this.income_daily, this.income_monthly] }],
+        labels: ['总收入', '日收入', '月收入'],
+        datasets: [
+          {
+            data: [this.income_totally, this.income_daily, this.income_monthly],
+          },
+        ],
       },
-    };
+    }
   },
   computed: {
     filteredCustomerList() {
@@ -129,91 +138,113 @@ export default {
           customer.email.toLowerCase().includes(this.search.toLowerCase()) ||
           customer.phone.toLowerCase().includes(this.search.toLowerCase()) ||
           customer.id.toString().includes(this.search)
-        );
-      });
+        )
+      })
     },
     premierCustomers() {
-      return this.customerList.filter(customer => customer.is_vip == true).length
+      return this.customerList.filter((customer) => customer.is_vip == true)
+        .length
     },
     income_totally() {
       return this.orderList.reduce((sum, order) => sum + order.paid, 0)
     },
     income_monthly() {
-      return this.orderList.filter(order => {
-        const date = new Date()
-        const created_at = new Date(order.CreatedAt)
-        return created_at.getMonth() == date.getMonth()
-      }).reduce((sum, order) => sum + order.paid, 0)
+      return this.orderList
+        .filter((order) => {
+          const date = new Date()
+          const created_at = new Date(order.CreatedAt)
+          return created_at.getMonth() == date.getMonth()
+        })
+        .reduce((sum, order) => sum + order.paid, 0)
     },
     income_daily() {
-      return this.orderList.filter(order => {
-        const date = new Date()
-        const created_at = new Date(order.CreatedAt)
-        return created_at.getDate() == date.getDate()
-      }).reduce((sum, order) => sum + order.paid, 0)
+      return this.orderList
+        .filter((order) => {
+          const date = new Date()
+          const created_at = new Date(order.CreatedAt)
+          return created_at.getDate() == date.getDate()
+        })
+        .reduce((sum, order) => sum + order.paid, 0)
     },
     price_purchase() {
       return this.purchaseList.reduce((sum, purchase) => sum + purchase.paid, 0)
     },
     price_net_income() {
-      return this.orderList.reduce((sum, order) => sum + order.paid, 0) - this.purchaseList.reduce((sum, purchase) => sum + purchase.debt, 0)
+      return (
+        this.orderList.reduce((sum, order) => sum + order.paid, 0) -
+        this.purchaseList.reduce((sum, purchase) => sum + purchase.debt, 0)
+      )
     },
     price_debt() {
-      const res = this.purchaseList.reduce((sum, purchase) => sum + purchase.debt, 0) - this.orderList.reduce((sum, order) => sum + order.paid, 0)
+      const res =
+        this.purchaseList.reduce((sum, purchase) => sum + purchase.debt, 0) -
+        this.orderList.reduce((sum, order) => sum + order.paid, 0)
       return res > 0 ? res : 0
     },
     price_income() {
       return this.orderList.reduce((sum, order) => sum + order.paid, 0)
     },
   },
+  mounted() {
+    this.showCustomerList()
+    this.showProdctList()
+    this.showOrderList()
+    this.showPurchaseList()
+  },
   methods: {
     async showCustomerList() {
-      await customerAPI.getCustomers().then((res) => {
-        this.customerList = res;
-      }).catch((err) => {
-        this.$message.error("顾客数据加载失败");
-      });
+      await customerAPI
+        .getCustomers()
+        .then((res) => {
+          this.customerList = res
+        })
+        .catch((err) => {
+          this.$message.error('顾客数据加载失败')
+        })
     },
     async showProdctList() {
-      await productAPI.getProducts().then((res) => {
-        this.productList = res;
-      }).catch((err) => {
-        this.$message.error("商品数据加载失败");
-      });
+      await productAPI
+        .getProducts()
+        .then((res) => {
+          this.productList = res
+        })
+        .catch((err) => {
+          this.$message.error('商品数据加载失败')
+        })
     },
     async showOrderList() {
-      await orderAPI.getOrders().then((res) => {
-        this.orderList = res;
-      }).catch((err) => {
-        this.$message.error("订单数据加载失败");
-      });
+      await orderAPI
+        .getOrders()
+        .then((res) => {
+          this.orderList = res
+        })
+        .catch((err) => {
+          this.$message.error('订单数据加载失败')
+        })
     },
     async showPurchaseList() {
-      await purchaseAPI.getPurchases().then((res) => {
-        this.purchaseList = res;
-      }).catch((err) => {
-        this.$message.error("进货数据加载失败");
-      });
+      await purchaseAPI
+        .getPurchases()
+        .then((res) => {
+          this.purchaseList = res
+        })
+        .catch((err) => {
+          this.$message.error('进货数据加载失败')
+        })
     },
     querySearch(queryString, cb) {
       const results = queryString
         ? this.productList.filter((product) =>
-          product.name.toLowerCase().includes(queryString.toLowerCase())
-        )
-        : this.productList;
-      cb(results);
+            product.name.toLowerCase().includes(queryString.toLowerCase())
+          )
+        : this.productList
+      cb(results)
     },
     handleSelect(item) {
-      this.product = item;
+      this.product = item
     },
   },
-  mounted() {
-    this.showCustomerList();
-    this.showProdctList();
-    this.showOrderList();
-    this.showPurchaseList();
-  },
-};
+}
 </script>
 
 <style lang="less" scoped>
