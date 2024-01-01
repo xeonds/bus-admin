@@ -104,9 +104,9 @@ func init_router() {
 		//查询某车队下司机基本信息
 		api.GET("query/driver", get[Driver]())
 		//查询某司机在某时间段落的违章详细信息
-		api.GET("query/validation/driver", get[Driver]())
+		api.GET("query/violation/driver", get[Driver]())
 		//查询某车队在某时间段的违章统计信息
-		api.GET("query/validation/team", get[Team]())
+		api.GET("query/violation/team", get[Team]())
 	}
 	r.NoRoute(gin.WrapH(http.FileServer(http.Dir("./dist/"))))
 }

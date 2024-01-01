@@ -10,7 +10,7 @@
 
     <el-container>
       <el-aside width="200px">
-        <el-menu mode="vertical" default-active="1" router>
+        <el-menu mode="vertical" default-active="0" router>
           <template v-for="(item, index) in items" :key="index">
             <el-menu-item
               :index="`${index}`"
@@ -29,8 +29,6 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-const router = useRouter()
 const items = reactive([
   {
     key: '',

@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>车辆管理</h1>
-        <el-button @click="addCompanyVisible = true">添加新车辆</el-button>
+        <el-button @click="addCompanyVisible = true">车辆信息录入</el-button>
         <el-dialog v-model="addCompanyVisible">
             <Form :col="companyCol" :on-submit="(_, data) => { addCompany(data) }"></Form>
         </el-dialog>
