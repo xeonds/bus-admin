@@ -38,7 +38,7 @@ const column: Array<Column> = reactive([
     { prop: 'Name', label: '公司名称', width: 0 },
 ])
 // add company form
-const companyCol = reactive([{ label: "公司名称", prop: "Name", type: "string" }])
+const companyCol = reactive([{ label: "司机名称", prop: "Name", type: "string" }])
 const addDriverVisible = ref(false)
 
 onMounted(() => {

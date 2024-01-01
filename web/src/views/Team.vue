@@ -42,7 +42,10 @@ const column: Array<Column> = reactive([
     { prop: 'Name', label: '车队名称', width: 0 },
 ])
 // add team form
-const teamCol = reactive([{ label: "车队名称", prop: "Name", type: "string" }])
+const teamCol = reactive([
+    { label: "车队名称", prop: "Name", type: "string" },
+    { label: "所属公司", prop: "Company", type: "string" },
+    { label: "管理员姓名", prop: "ManagerName", type: "string" }])
 const addTeamVisible = ref(false)
 
 const teamDetailVisible = ref(false)

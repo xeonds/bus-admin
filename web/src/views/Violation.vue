@@ -27,7 +27,21 @@
             </el-table>
         </el-dialog>
         <el-dialog title="车队违章查询" v-model="queryTeamViolationVisible">
-            <Form :col="violationCol" :on-submit="(_, data) => { insertViolation(data) }"></Form>
+            <el-form :inline="true">
+                <el-form-item label="车队名称">
+                    <el-input v-model="driverName"></el-input>
+                </el-form-item>
+                <el-form-item label="起止时间选择">
+                    <el-date-picker v-model="driverViolationTime" type="datetimerange" start-placeholder="Start date"
+                        end-placeholder="End date" format="YYYY-MM-DD HH:mm:ss" date-format="YYYY/MM/DD ddd"
+                        time-format="A hh:mm:ss" />
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="queryDriverViolation">查询</el-button>
+                </el-form-item>
+            </el-form>
+            <el-table style="width:100%" :data="driverViolationRes">
+            </el-table>
         </el-dialog>
         <el-table>
             <el-table-column v-for="item in column" :key="item.prop" :prop="item.prop" :label="item.label"
@@ -57,20 +71,21 @@ const column: Array<Column> = reactive([
 const violationData = ref([])
 const fetchViolationData = () => {
     const { data, err } = get(api)
-    if (err.value != null) {
-        ElMessage.error(err.value)
-    }
-    updateRef(violationData, data.value)
+    if (err.value != null) ElMessage.error(err.value)
+    else updateRef(violationData, data.value)
 }
 // insert violation info form
-const violationCol = reactive([{ label: "公司名称", prop: "Name", type: "string" }])
+const violationCol = reactive([
+    { label: "司机名称", prop: "Name", type: "string" },
+    { label: "车辆信息", prop: "Vehicle", type: "string" },
+    { label: "车队信息", prop: "Team", type: "string" },
+    { label: "路线", prop: "Route", type: "string" },
+    { label: "违章时间", prop: "OccurredAt", type: "date" }])
 const insertViolationVisible = ref(false)
 const insertViolation = (_data: any) => {
-    const { data, err } = post(api, _data)
-    if (err.value != null) {
-        ElMessage.error(err.value)
-        return
-    }
+    const { err } = post(api, _data)
+    if (err.value != null) ElMessage.error(err.value)
+    else fetchViolationData()
 
 }
 // query violation of drivers
