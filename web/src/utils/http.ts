@@ -2,11 +2,11 @@ export const useFetch = (url: string, init?: RequestInit | undefined) => {
   const data = ref(null)
   const err = ref(null)
   fetch(url, init)
-  .then((res)=>res.json())
-  .then((json)=>data.value = json)
-  .catch((err)=>err.value = err)
+    .then((res) => res.json())
+    .then((json) => data.value = json)
+    .catch((err) => err.value = err)
 
-  return {data,err}
+  return { data, err }
 }
 
 const useHttp = (baseUrl: string, token: string) => {
@@ -14,7 +14,7 @@ const useHttp = (baseUrl: string, token: string) => {
     return useFetch(`${baseUrl}${url}`, {
       headers: {
         'Authorization': `Bearer ${token}`
-        }
+      }
     })
   }
   const post = (url: string, data: any) => {
@@ -27,7 +27,7 @@ const useHttp = (baseUrl: string, token: string) => {
       body: JSON.stringify(data)
     })
   }
-  return {get,post}
+  return { get, post }
 }
 
 const baseUrl = '/api/v1/'

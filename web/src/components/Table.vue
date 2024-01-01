@@ -1,6 +1,10 @@
 <template>
     <el-table :data="data">
-        <el-table-column v-for="col in column" :key="col.prop" :prop="col.prop" :label="col.label" />
+        <el-table-column v-for="col in column" :key="col.prop" :prop="col.prop" :label="col.label">
+        </el-table-column>
+        <template #default="{ row }">
+            <slot name="end" v-bind:row="row"></slot>
+        </template>
     </el-table>
 </template>
 

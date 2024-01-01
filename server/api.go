@@ -25,11 +25,16 @@ func get[T Company | Team | Route | Driver | RoadManager | Violation | Vehicle](
 	return func(c *gin.Context) {
 		params := c.Request.URL.Query()
 		var d T
-		if err := db.Where(params).Find(&d).Error; err != nil {
-			c.AbortWithStatus(404)
-			fmt.Println(err)
+		if params != nil {
+			if err := db.Where(params).Find(&d).Error; err != nil {
+				c.AbortWithStatus(404)
+				fmt.Println(err)
+			} else {
+				c.JSON(200, d)
+			}
 		} else {
-			c.JSON(200, d)
+			c.AbortWithStatus(404)
+			fmt.Println("No params")
 		}
 	}
 }
