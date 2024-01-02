@@ -108,10 +108,11 @@ const { post } = http
 const api = '/violation'
 // violation main table
 const column: Array<Column> = reactive([
-  { prop: 'Driver', label: '司机', width: 0 },
-  { prop: 'Vehicle', label: '车辆', width: 0 },
-  { prop: 'Team', label: '车队', width: 0 },
-  { prop: 'Route', label: '路线', width: 0 },
+  { prop: 'ID', label: 'ID', width: 0 },
+  { prop: 'DriverID', label: '司机ID', width: 0 },
+  { prop: 'VehicleID', label: '车辆ID', width: 0 },
+  { prop: 'TeamID', label: '车队ID', width: 0 },
+  { prop: 'RouteID', label: '路线ID', width: 0 },
   { prop: 'OccurredAt', label: '违章时间', width: 0 },
   { prop: 'ViolationType', label: '违章类型', width: 0 },
 ])
@@ -132,7 +133,7 @@ const driverViolationTime = ref('')
 const driverName = ref('')
 const driverViolationRes = ref([])
 const queryDriverViolation = async () => {
-  const { data, err } = await post('query/violation/driver', {
+  const { data, err } = await post('/query/violation/driver', {
     Name: driverName.value,
     Time: driverViolationTime.value,
   })
@@ -146,7 +147,7 @@ const teamViolationTime = ref('')
 const teamName = ref('')
 const teamViolationRes = ref([])
 const queryTeamViolation = async () => {
-  const { data, err } = await post('query/violation/team', {
+  const { data, err } = await post('/query/violation/team', {
     Name: teamName.value,
     Time: teamViolationTime.value,
   })

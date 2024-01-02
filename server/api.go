@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -136,6 +137,11 @@ func CRUD[T any](r *gin.RouterGroup, relativePath string) {
 	r.DELETE(relativePath+"/:id", delete[T]())
 }
 
+type ReqeustQuery struct {
+	Name string
+	Time []string
+}
+
 func init_router() {
 	r = gin.Default()
 	api := r.Group("/api/v1/")
@@ -151,9 +157,29 @@ func init_router() {
 		api.POST("record/driver", create[Driver]())       //录入司机基本信息
 		api.POST("record/vehicle", create[Vehicle]())     //录入汽车基本信息
 		api.POST("record/violation", create[Violation]()) //录入司机违章信息
-		api.GET("query/driver", get[Driver]())            //查询某车队下司机基本信息
-		api.GET("query/violation/driver", get[Driver]())  //查询某司机在某时间段落的违章详细信息
-		api.GET("query/violation/team", get[Team]())      //查询某车队在某时间段的违章统计信息
+		api.POST("query/driver", get[Driver]())           //查询某车队下司机基本信息
+		api.POST("query/violation/driver", func(c *gin.Context) {
+			var data ReqeustQuery
+			c.ShouldBindJSON(&data)
+			query := db.Model(&Violation{}).Joins("Vehicle").Joins("Team").Joins("Route").Joins("Driver")
+			start, _ := time.Parse(time.RFC3339, data.Time[0])
+			end, _ := time.Parse(time.RFC3339, data.Time[1])
+			query = query.Where("Driver.Name = ? AND occurred_at BETWEEN ? AND ?", data.Name, start, end)
+			var violations []Violation
+			query.Find(&violations)
+			c.JSON(200, violations)
+		})
+		api.POST("query/violation/team", func(c *gin.Context) {
+			var data ReqeustQuery
+			c.ShouldBindJSON(&data)
+			query := db.Model(&Violation{}).Joins("Vehicle").Joins("Team").Joins("Route").Joins("Driver")
+			start, _ := time.Parse(time.RFC3339, data.Time[0])
+			end, _ := time.Parse(time.RFC3339, data.Time[1])
+			query = query.Where("Team.Name = ? AND occurred_at BETWEEN ? AND ?", data.Name, start, end)
+			var violations []Violation
+			query.Find(&violations)
+			c.JSON(200, violations)
+		})
 	}
 	r.NoRoute(gin.WrapH(http.FileServer(http.Dir("./dist/"))))
 }

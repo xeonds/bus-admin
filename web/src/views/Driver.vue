@@ -41,7 +41,7 @@ const api = '/driver'
 const column: Array<Column> = reactive([
   { prop: 'ID', label: 'ID', width: 0 },
   { prop: 'Name', label: '司机姓名', width: 0 },
-  { prop: 'Route', label: '所属路线', width: 0 },
+  { prop: 'RouteID', label: '所属路线ID', width: 0 },
 ])
 const driverData = ref([])
 // add driver form

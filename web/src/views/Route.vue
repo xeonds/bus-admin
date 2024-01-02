@@ -3,23 +3,14 @@
     <h1>线路管理</h1>
     <el-button @click="addRouteVisible = true">线路信息录入</el-button>
     <el-dialog v-model="addRouteVisible" title="线路信息录入">
-      <Form
-        :col="routeCol"
-        @submit="
-          (data) => {
-            addRoute(data)
-          }
-        "
-      />
+      <Form :col="routeCol" @submit="(data) => {
+          addRoute(data)
+        }
+        " />
     </el-dialog>
     <el-table :data="routeData">
-      <el-table-column
-        v-for="item in column"
-        :key="item.prop"
-        :prop="item.prop"
-        :label="item.label"
-        :width="item.width"
-      />
+      <el-table-column v-for="item in column" :key="item.prop" :prop="item.prop" :label="item.label"
+        :width="item.width" />
       <el-table-column prop="actions" label="操作">
         <template #default="{ row }">
           <el-button>删除</el-button>
@@ -40,7 +31,7 @@ const api = '/route'
 const column: Array<Column> = reactive([
   { prop: 'ID', label: 'ID', width: 0 },
   { prop: 'Name', label: '线路名称', width: 0 },
-  { prop: 'Team', label: '所属车队', width: 0 },
+  { prop: 'TeamID', label: '所属车队ID', width: 0 },
 ])
 const routeData = ref([])
 // add route form

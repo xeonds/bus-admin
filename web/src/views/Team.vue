@@ -5,33 +5,14 @@
       <el-button @click="addTeamVisible = true">车队信息录入</el-button>
     </el-row>
     <el-dialog v-model="addTeamVisible" title="车队信息录入">
-      <Form
-        :col="teamCol"
-        @submit="
-          (data) => {
-            addTeam(data)
-          }
-        "
-      />
+      <Form :col="teamCol" @submit="(data) => { addTeam(data) }" />
     </el-dialog>
     <el-dialog v-model="teamDetailVisible" title="车队详细信息">
-      <Form
-        :col="teamCol"
-        @submit="
-          (data) => {
-            addTeam(data)
-          }
-        "
-      />
+      <Form :col="teamCol" @submit="(data) => { addTeam(data) }" />
     </el-dialog>
     <el-table :data="teamData">
-      <el-table-column
-        v-for="item in column"
-        :key="item.prop"
-        :prop="item.prop"
-        :label="item.label"
-        :width="item.width"
-      />
+      <el-table-column v-for="item in column" :key="item.prop" :prop="item.prop" :label="item.label"
+        :width="item.width" />
       <el-table-column prop="actions" label="操作">
         <template #default="{ row }">
           <el-button @click="deleteTeam(row)">删除</el-button>
@@ -52,7 +33,7 @@ const api = '/team'
 const column: Array<Column> = reactive([
   { prop: 'ID', label: 'ID', width: 0 },
   { prop: 'Name', label: '车队名称', width: 0 },
-  { prop: 'Company', label: '所属公司', width: 0 },
+  { prop: 'CompanyID', label: '所属公司ID', width: 0 },
   { prop: 'ManagerName', label: '管理员姓名', width: 0 },
 ])
 const teamData = ref([])
