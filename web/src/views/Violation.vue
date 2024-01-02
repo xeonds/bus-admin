@@ -89,7 +89,7 @@ const violationCol = reactive([
     { label: "车辆信息", prop: "Vehicle", type: "string" },
     { label: "车队信息", prop: "Team", type: "string" },
     { label: "路线", prop: "Route", type: "string" },
-    { label: "违章时间", prop: "OccurredAt", type: "date" }])
+    { label: "违章时间", prop: "OccurredAt", type: "datetime" }])
 const insertViolationVisible = ref(false)
 const insertViolation = (_data: any) => {
     if (dialogPost(api, _data, insertViolationVisible).value == null)

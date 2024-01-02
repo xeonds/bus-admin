@@ -15,6 +15,12 @@
         placeholder="选择日期"
         v-if="item.type == 'date'"
       />
+      <el-date-picker
+        v-model="data[item.prop]"
+        type="datetime"
+        placeholder="选择日期"
+        v-if="item.type == 'datetime'"
+      />
       <el-input v-model="data[item.prop]" v-if="item.type == 'string'" />
       <el-input
         v-model.number="data[item.prop]"
