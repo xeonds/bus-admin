@@ -4,7 +4,7 @@
         <el-row>
             <el-button @click="addDriverVisible = true">司机信息录入</el-button>
         </el-row>
-        <el-dialog v-model="addDriverVisible">
+        <el-dialog title="司机信息录入" v-model="addDriverVisible">
             <Form :col="companyCol" @submit="(data) => { addCompany(data) }"></Form>
         </el-dialog>
         <el-table>

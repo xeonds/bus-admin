@@ -24,6 +24,8 @@
                 </el-form-item>
             </el-form>
             <el-table style="width:100%" :data="driverViolationRes">
+                <el-table-column v-for="item in column" :key="item.prop" :prop="item.prop" :label="item.label"
+                    :width="item.width"></el-table-column>
             </el-table>
         </el-dialog>
         <el-dialog title="车队违章查询" v-model="queryTeamViolationVisible">
@@ -41,6 +43,8 @@
                 </el-form-item>
             </el-form>
             <el-table style="width:100%" :data="teamViolationRes">
+                <el-table-column v-for="item in column" :key="item.prop" :prop="item.prop" :label="item.label"
+                    :width="item.width"></el-table-column>
             </el-table>
         </el-dialog>
         <el-table>
@@ -66,7 +70,12 @@ const updateRef = (refData: any, _data: any) => { refData.value = _data }
 // violation main table
 const column: Array<Column> = reactive([
     { prop: 'ID', label: 'ID', width: 0 },
-    { prop: 'Name', label: '公司名称', width: 0 },
+    { prop: 'Driver', label: '司机', width: 0 },
+    { prop: 'Vehicle', label: '车辆', width: 0 },
+    { prop: 'Team', label: '车队', width: 0 },
+    { prop: 'Route', label: '路线', width: 0 },
+    { prop: 'OccurredAt', label: '违章时间', width: 0 },
+    { prop: 'ViolationType', label: '违章类型', width: 0 },
 ])
 const violationData = ref([])
 const fetchViolationData = () => {
