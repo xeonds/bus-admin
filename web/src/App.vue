@@ -12,11 +12,9 @@
       <el-aside width="200px">
         <el-menu mode="vertical" default-active="0" router>
           <template v-for="(item, index) in items" :key="index">
-            <el-menu-item
-              :index="`${index}`"
-              :route="`/${item.key}`"
-              >{{ item.title }}</el-menu-item
-            >
+            <el-menu-item :index="`${index}`" :route="`/${item.key}`">{{
+              item.title
+            }}</el-menu-item>
           </template>
         </el-menu>
       </el-aside>

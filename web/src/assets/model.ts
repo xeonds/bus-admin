@@ -1,45 +1,53 @@
 declare interface Company {
-    ID: number;
-    Name: string;
-    CreatedAt: string;
+  ID: number
+  Name: string
+  CreatedAt: string
 }
 
 declare interface Team {
-    ID: number;
-    Name: string;
-    Company: Company;
-    ManagerName: string;
+  ID: number
+  Name: string
+  CompanyID: number
+  Company: Company
+  ManagerName: string
 }
 
 declare interface Route {
-    ID: number;
-    Name: string;
-    Team: Team;
+  ID: number
+  Name: string
+  TeamID: number
+  Team: Team
 }
 
 declare interface Driver {
-    ID: number;
-    Name: string;
-    Route: Route;
+  ID: number
+  Name: string
+  RouteID: number
+  Route: Route
 }
 
 declare interface RoadManager {
-    ID: number;
-    Name: string;
-    Route: Route;
+  ID: number
+  Name: string
+  RouteID: number
+  Route: Route
 }
 
 declare interface Violation {
-    ID: number;
-    Driver: Driver;
-    Vehicle: Vehicle;
-    Team: Team;
-    Route: Route;
-    OccurredAt: string;
-    ViolationType: string;
+  ID: number
+  DriverID: number
+  VehicleID: number
+  TeamID: number
+  RouteID: number
+  OccurredAt: string
+  ViolationType: string
+  Driver: Driver
+  Vehicle: Vehicle
+  Team: Team
+  Route: Route
 }
 
 declare interface Vehicle {
-    ID: number;
-    VIN: string;
+  ID: number
+  VIN: string
 }

@@ -128,38 +128,25 @@ func delete[T any]() func(c *gin.Context) {
 	}
 }
 
+func CRUD[T any](r *gin.RouterGroup, relativePath string) {
+	r.POST(relativePath, create[T]())
+	r.GET(relativePath+"/:id", get[T]())
+	r.GET(relativePath, get[T]())
+	r.PUT(relativePath+"/:id", update[T]())
+	r.DELETE(relativePath+"/:id", delete[T]())
+}
+
 func init_router() {
 	r = gin.Default()
 	api := r.Group("/api/v1/")
 	{
-		api.GET("company", get[Company]())
-		api.GET("team", get[Team]())
-		api.GET("route", get[Route]())
-		api.GET("driver", get[Driver]())
-		api.GET("road_manager", get[RoadManager]())
-		api.GET("violation", get[Violation]())
-		api.GET("vehicle", get[Vehicle]())
-		api.PUT("company", update[Company]())
-		api.PUT("team", update[Team]())
-		api.PUT("route", update[Route]())
-		api.PUT("driver", update[Driver]())
-		api.PUT("road_manager", update[RoadManager]())
-		api.PUT("violation", update[Violation]())
-		api.PUT("vehicle", update[Vehicle]())
-		api.POST("company", create[Company]())
-		api.POST("team", create[Team]())
-		api.POST("route", create[Route]())
-		api.POST("driver", create[Driver]())
-		api.POST("road_manager", create[RoadManager]())
-		api.POST("violation", create[Violation]())
-		api.POST("vehicle", create[Vehicle]())
-		api.DELETE("company", delete[Company]())
-		api.DELETE("team", delete[Team]())
-		api.DELETE("route", delete[Route]())
-		api.DELETE("driver", delete[Driver]())
-		api.DELETE("road_manager", delete[RoadManager]())
-		api.DELETE("violation", delete[Violation]())
-		api.DELETE("vehicle", delete[Vehicle]())
+		CRUD[Company](api, "company")
+		CRUD[Team](api, "team")
+		CRUD[Route](api, "route")
+		CRUD[Driver](api, "driver")
+		CRUD[RoadManager](api, "road_manager")
+		CRUD[Violation](api, "violation")
+		CRUD[Vehicle](api, "vehicle")
 		// service apis
 		api.POST("record/driver", create[Driver]())       //录入司机基本信息
 		api.POST("record/vehicle", create[Vehicle]())     //录入汽车基本信息
