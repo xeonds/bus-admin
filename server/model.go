@@ -20,40 +20,49 @@ type Company struct {
 type Team struct {
 	ID          uint `gorm:"primaryKey;autoIncrement"`
 	Name        string
-	Company     Company `gorm:"foreignKey:ID;onDelete:CASCADE"`
+	CompanyID   uint
+	Company     Company `gorm:"foreignKey:CompanyID;onDelete:CASCADE"`
 	ManagerName string
 }
 
 // 路线
 type Route struct {
-	ID   uint `gorm:"primaryKey;autoIncrement"`
-	Name string
-	Team Team `gorm:"foreignKey:ID;onDelete:CASCADE"`
+	ID     uint `gorm:"primaryKey;autoIncrement"`
+	Name   string
+	TeamID uint
+	Team   Team `gorm:"foreignKey:TeamID;onDelete:CASCADE"`
 }
 
 // 司机
 type Driver struct {
-	ID    uint `gorm:"primaryKey;autoIncrement"`
-	Name  string
-	Route Route `gorm:"foreignKey:ID;onDelete:CASCADE"`
+	ID      uint `gorm:"primaryKey;autoIncrement"`
+	Name    string
+	RouteID uint
+	Route   Route `gorm:"foreignKey:RouteID;onDelete:CASCADE"`
 }
 
 // 队长
 type RoadManager struct {
-	ID    uint `gorm:"primaryKey"`
-	Name  string
-	Route Route `gorm:"foreignKey:ID;onDelete:CASCADE"`
+	ID      uint `gorm:"primaryKey"`
+	Name    string
+	RouteID uint
+	Route   Route `gorm:"foreignKey:RouteID;onDelete:CASCADE"`
 }
 
 // 违章
 type Violation struct {
-	ID            uint    `gorm:"primaryKey;autoIncrement"`
-	Driver        Driver  `gorm:"foreignKey:ID;onDelete:CASCADE"`
-	Vehicle       Vehicle `gorm:"foreignKey:ID;onDelete:CASCADE"`
-	Team          Team    `gorm:"foreignKey:ID;onDelete:CASCADE"`
-	Route         Route   `gorm:"foreignKey:ID;onDelete:CASCADE"`
+	ID            uint `gorm:"primaryKey;autoIncrement"`
+	DriverID      uint
+	VehicleID     uint
+	TeamID        uint
+	RouteID       uint
 	OccurredAt    time.Time
 	ViolationType string
+
+	Driver  Driver  `gorm:"foreignKey:DriverID;onDelete:CASCADE"`
+	Vehicle Vehicle `gorm:"foreignKey:VehicleID;onDelete:CASCADE"`
+	Team    Team    `gorm:"foreignKey:TeamID;onDelete:CASCADE"`
+	Route   Route   `gorm:"foreignKey:RouteID;onDelete:CASCADE"`
 }
 
 // 车辆
