@@ -4,17 +4,17 @@ export default {
   },
   mutations: {
     SET_TOKEN(state, token) {
-      state.token = token;
+      state.token = token
     },
   },
   actions: {
     setToken({ commit }, token) {
-      commit("SET_TOKEN", token);
+      commit('SET_TOKEN', token)
     },
   },
   getters: {
     getToken(state) {
-      return state.token;
+      return state.token
     },
   },
-};
+}
