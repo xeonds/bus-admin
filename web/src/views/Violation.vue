@@ -7,7 +7,7 @@
             <el-button @click="queryTeamViolationVisible = true">车队时段违章查询</el-button>
         </el-row>
         <el-dialog title="违章信息录入" v-model="insertViolationVisible">
-            <Form :col="violationCol" :on-submit="(_, data) => { insertViolation(data) }"></Form>
+            <Form :col="violationCol" @submit="(data) => { insertViolation(data) }"></Form>
         </el-dialog>
         <el-dialog title="司机违章查询" v-model="queryDriverViolationVisible">
             <el-form :inline="true">

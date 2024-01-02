@@ -1,20 +1,30 @@
-PROJECT_NAME=bus-admin
-CONFIG_FILE	=config.yaml
-BINARY_DIR	=server
+NAME=bus-admin
+BINARY_DIR=build
+VERSION=1.0.0
+BUILDTIME=$(shell date -u)
+GOBUILD=cd server && go build -ldflags '-X "main.version=$(VERSION)" -X "main.buildTime=$(BUILDTIME)"'
+FRONTBUILD=cd web && pnpm i && vite build --outDir=../$(BINARY_DIR)/dist
 
-all: web server
-	if [ -d "build" ];then rm -rf build; fi \
-	&& mkdir build && cp -r web/dist build/ && cp server/server build/ && cp -r server/resource build/resource 
+all: linux-amd64 windows-amd64 frontend
 
-web:
-	@cd web/ && if [ -d "dist" ];then rm -rf dist; fi \
-	&& npm set registry http://mirrors.cloud.tencent.com/npm/ && npm install && npm build
+linux-amd64: 
+	GOOS=linux GOARCH=amd64 $(GOBUILD) -o ../$(BINARY_DIR)/$(NAME)-$@-$(VERSION)
 
-server:
-	@cd server/ && if [ -f "$(PROJECT_NAME)" ];then rm $(PROJECT_NAME); fi \
-	&& go env -w GO111MODULE=on && go env -w GOPROXY=https://goproxy.cn,direct \
-	&& go env -w CGO_ENABLED=0 && go env  && go mod tidy \
-	&& go build -ldflags "-B 0x$(shell head -c20 /dev/urandom|od -An -tx1|tr -d ' \n') -X main.Version=${TAGS_OPT}" -v
+linux-arm64: 
+	GOOS=linux GOARCH=arm64 $(GOBUILD) -o ../$(BINARY_DIR)/$(NAME)-$@-$(VERSION)
 
-run: server
-	cd $(BINARY_DIR) && ./$(PROJECT_NAME) -c $(CONFIG_FILE)
+windows-amd64: 
+	GOOS=windows GOARCH=amd64 $(GOBUILD) -o ../$(BINARY_DIR)/$(NAME)-$@-$(VERSION).exe
+
+windows-amd64-v3: 
+	GOOS=windows GOARCH=amd64 GOAMD64=v3 $(GOBUILD) -o ../$(BINARY_DIR)/$(NAME)-$@-$(VERSION).exe
+
+frontend:
+	$(FRONTBUILD)
+
+clean:
+	rm -rf $(BINARY_DIR)/bus-admin*
+	rm -rf $(BINARY_DIR)/dist
+
+run: linux-amd64
+	cd $(BINARY_DIR) && ./$(NAME)-linux-amd64-$(VERSION)

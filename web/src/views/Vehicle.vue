@@ -3,7 +3,7 @@
         <h1>车辆管理</h1>
         <el-button @click="addVehicleVisible = true">车辆信息录入</el-button>
         <el-dialog title="车辆信息录入" v-model="addVehicleVisible">
-            <Form :col="vehicleCol" :on-submit="(_, data) => { addVehicle(data) }"></Form>
+            <Form :col="vehicleCol" @submit="(data) => { addVehicle(data) }"></Form>
         </el-dialog>
         <el-table>
             <el-table-column v-for="item in column" :key="item.prop" :prop="item.prop" :label="item.label"

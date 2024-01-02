@@ -3,7 +3,7 @@
         <h1>公司管理</h1>
         <el-button @click="addCompanyVisible = true">添加新公司</el-button>
         <el-dialog title="添加新公司" v-model="addCompanyVisible">
-            <Form :col="companyCol" :on-submit="(_, data) => { addCompany(data) }"></Form>
+            <Form :col="companyCol" @submit="(data) => { addCompany(data) }"></Form>
         </el-dialog>
         <el-table>
             <el-table-column v-for="item in column" :key="item.prop" :prop="item.prop" :label="item.label"

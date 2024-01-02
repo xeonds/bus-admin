@@ -3,7 +3,7 @@
     <h1>线路管理</h1>
         <el-button @click="addRouteVisible = true">线路信息录入</el-button>
         <el-dialog title="线路信息录入" v-model="addRouteVisible">
-            <Form :col="routeCol" :on-submit="(_, data) => { addRoute(data) }"></Form>
+            <Form :col="routeCol" @submit="(data) => { addRoute(data) }"></Form>
         </el-dialog>
         <el-table>
             <el-table-column v-for="item in column" :key="item.prop" :prop="item.prop" :label="item.label"

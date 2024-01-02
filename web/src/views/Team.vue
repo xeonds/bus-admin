@@ -5,10 +5,10 @@
             <el-button @click="addTeamVisible = true">车队信息录入</el-button>
         </el-row>
         <el-dialog title="车队信息录入" v-model="addTeamVisible">
-            <Form :col="teamCol" :on-submit="(_, data) => { addTeam(data) }"></Form>
+            <Form :col="teamCol" @submit="(data) => { addTeam(data) }"></Form>
         </el-dialog>
         <el-dialog title="车队详细信息" v-model="teamDetailVisible">
-            <Form :col="teamCol" :on-submit="(_, data) => { addTeam(data) }"></Form>
+            <Form :col="teamCol" @submit="(data) => { addTeam(data) }"></Form>
         </el-dialog>
         <el-table>
             <el-table-column v-for="item in column" :key="item.prop" :prop="item.prop" :label="item.label"
