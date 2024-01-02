@@ -16,7 +16,6 @@
       <el-table-column prop="actions" label="操作">
         <template #default="{ row }">
           <el-button @click="deleteTeam(row)">删除</el-button>
-          <el-button>详情</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -45,7 +44,7 @@ const teamCol: Array<Column> = reactive([
 const addTeamVisible = ref(false)
 const addTeam = async (_data: any) =>
   dialogPost(api, _data, addTeamVisible, teamData)
-const deleteTeam = async (_data: any) => deleteData(api, _data, teamData)
+const deleteTeam = async (_data: any) => deleteData(api, _data.ID, teamData)
 // team details dialog
 const teamDetailVisible = ref(false)
 

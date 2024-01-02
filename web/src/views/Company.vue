@@ -23,7 +23,6 @@
       <el-table-column prop="actions" label="操作">
         <template #default="{ row }">
           <el-button @click="deleteCompany(row)">删除</el-button>
-          <el-button @click="ElMessage.info('开发中')">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>

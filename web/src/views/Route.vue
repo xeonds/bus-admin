@@ -13,8 +13,7 @@
         :width="item.width" />
       <el-table-column prop="actions" label="操作">
         <template #default="{ row }">
-          <el-button>删除</el-button>
-          <el-button @click="deleteRoute(row)">编辑</el-button>
+          <el-button @click="deleteRoute(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
