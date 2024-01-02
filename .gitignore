@@ -1,1 +1,4 @@
 /build
+server/config.yaml
+server/README.md
+server/bus-admin

@@ -1,6 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import 'uno.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
+import router from './utils/router'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+app.use(router)
+app.mount('#app')

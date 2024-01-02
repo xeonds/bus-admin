@@ -1,0 +1,44 @@
+<template>
+    <div>
+        <h1>公司管理</h1>
+        <el-button @click="addCompanyVisible = true">添加新公司</el-button>
+        <el-dialog title="添加新公司" v-model="addCompanyVisible">
+            <Form :col="companyCol" @submit="(data) => { addCompany(data) }"></Form>
+        </el-dialog>
+        <el-table>
+            <el-table-column v-for="item in column" :key="item.prop" :prop="item.prop" :label="item.label"
+                :width="item.width"></el-table-column>
+            <el-table-column prop="actions" label="操作">
+                <template #default="{ row }">
+                    <el-button>删除</el-button>
+                    <el-button>编辑</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+</template>
+
+<script lang="ts" setup>
+// data action
+import { http, dialogPost } from '@/utils/http';
+const { get } = http
+const api = "/company"
+// main table
+import type { Column } from 'element-plus';
+const companyData = ref([])
+const column: Array<Column> = reactive([
+    { prop: 'ID', label: 'ID', width: 0 },
+    { prop: 'Name', label: '公司名称', width: 0 },
+])
+const update = (_data: any) => { companyData.value = _data }
+// add company form
+const companyCol = reactive([{ label: "公司名称", prop: "Name", type: "string" }])
+const addCompanyVisible = ref(false)
+const addCompany = (_data: any) => dialogPost(api, _data, addCompanyVisible)
+
+onMounted(() => {
+    const { data, err } = get(api)
+    if (err.value != null) update(data.value)
+})
+
+</script>
