@@ -34,7 +34,7 @@ const update = (_data: any) => { companyData.value = _data }
 // add company form
 const companyCol = reactive([{ label: "公司名称", prop: "Name", type: "string" }])
 const addCompanyVisible = ref(false)
-const addCompany = (_data: any) => dialogPost(api, _data, addCompanyVisible)
+const addCompany = (_data: Company) => dialogPost(api, { ..._data }, addCompanyVisible)
 
 onMounted(() => {
     const { data, err } = get(api)

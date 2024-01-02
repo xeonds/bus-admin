@@ -11,14 +11,14 @@ import (
 
 // 公司
 type Company struct {
-	ID        uint `gorm:"primaryKey"`
+	ID        uint `gorm:"primaryKey;autoIncrement"`
 	Name      string
 	CreatedAt time.Time
 }
 
 // 车队
 type Team struct {
-	ID          uint `gorm:"primaryKey"`
+	ID          uint `gorm:"primaryKey;autoIncrement"`
 	Name        string
 	Company     Company `gorm:"foreignKey:ID;onDelete:CASCADE"`
 	ManagerName string
@@ -26,14 +26,14 @@ type Team struct {
 
 // 路线
 type Route struct {
-	ID   uint `gorm:"primaryKey"`
+	ID   uint `gorm:"primaryKey;autoIncrement"`
 	Name string
 	Team Team `gorm:"foreignKey:ID;onDelete:CASCADE"`
 }
 
 // 司机
 type Driver struct {
-	ID    uint `gorm:"primaryKey"`
+	ID    uint `gorm:"primaryKey;autoIncrement"`
 	Name  string
 	Route Route `gorm:"foreignKey:ID;onDelete:CASCADE"`
 }
@@ -47,7 +47,7 @@ type RoadManager struct {
 
 // 违章
 type Violation struct {
-	ID            uint    `gorm:"primaryKey"`
+	ID            uint    `gorm:"primaryKey;autoIncrement"`
 	Driver        Driver  `gorm:"foreignKey:ID;onDelete:CASCADE"`
 	Vehicle       Vehicle `gorm:"foreignKey:ID;onDelete:CASCADE"`
 	Team          Team    `gorm:"foreignKey:ID;onDelete:CASCADE"`
@@ -58,7 +58,7 @@ type Violation struct {
 
 // 车辆
 type Vehicle struct {
-	ID  uint `gorm:"primaryKey"`
+	ID  uint `gorm:"primaryKey;autoIncrement"`
 	VIN string
 }
 

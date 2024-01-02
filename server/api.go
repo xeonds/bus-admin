@@ -14,16 +14,18 @@ func create[T any]() func(c *gin.Context) {
 		if model == nil {
 			return errors.New("model is nil")
 		}
-		return db.Create(&model).Error
+		return db.Create(model).Error
 	}
 
 	return func(c *gin.Context) {
 		var model T
 		if err := c.ShouldBindJSON(&model); err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error(), "data": model})
+			return
 		}
 		if err := _create(&model); err != nil {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "data": model})
+			return
 		}
 		c.JSON(http.StatusCreated, model)
 	}
@@ -51,12 +53,14 @@ func get[T any]() func(c *gin.Context) {
 			models, err := _getAll()
 			if err != nil {
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				return
 			}
 			c.JSON(http.StatusOK, models)
 		} else {
 			model, err := _get(id)
 			if err != nil {
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				return
 			}
 			c.JSON(http.StatusOK, model)
 		}
@@ -68,7 +72,7 @@ func update[T any]() func(c *gin.Context) {
 		if model == nil {
 			return errors.New("model is nil")
 		}
-		return db.Save(&model).Error
+		return db.Save(model).Error
 	}
 
 	return func(c *gin.Context) {
@@ -77,9 +81,11 @@ func update[T any]() func(c *gin.Context) {
 		// TODO: check exist
 		if err := c.ShouldBindJSON(&model); err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
 		}
 		if err := _update(&model); err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
 		}
 		c.JSON(http.StatusOK, model)
 	}
@@ -90,13 +96,13 @@ func delete[T any]() func(c *gin.Context) {
 		if model == nil {
 			return errors.New("model is nil")
 		}
-		return db.Delete(&model).Error
+		return db.Delete(model).Error
 	}
 	_deleteById := func(id string, model any) error {
 		if model == nil {
 			return errors.New("model is nil")
 		}
-		return db.Where("id = ?", id).Delete(&model).Error
+		return db.Where("id = ?", id).Delete(model).Error
 	}
 
 	return func(c *gin.Context) {
@@ -106,13 +112,16 @@ func delete[T any]() func(c *gin.Context) {
 			// TODO: check exist
 			if err := c.ShouldBindJSON(&model); err != nil {
 				c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+				return
 			}
 			if err := _delete(&model); err != nil {
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				return
 			}
 		} else {
 			if err := _deleteById(id, &model); err != nil {
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				return
 			}
 		}
 		c.JSON(http.StatusOK, model)
