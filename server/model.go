@@ -66,11 +66,11 @@ var db *gorm.DB
 
 func init_db() error {
 	dbConfig := viper.GetStringMap("database")
+	var err error
 	dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8mb4&parseTime=True&loc=Local",
 		dbConfig["user"], dbConfig["password"],
 		dbConfig["host"], dbConfig["port"], dbConfig["name"])
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
+	if db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{}); err != nil {
 		return err
 	}
 	if migrate := dbConfig["migrate"]; migrate == false {
