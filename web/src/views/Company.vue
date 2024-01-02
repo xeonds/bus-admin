@@ -20,24 +20,21 @@
 
 <script lang="ts" setup>
 // data action
-import { http } from '@/utils/http';
-const { get, post } = http
+import { http, dialogPost } from '@/utils/http';
+const { get } = http
 const api = "/company"
-const companyData = ref([])
-const update = (_data: any) => { companyData.value = _data }
-const addCompany = (_data: any) => {
-    const { data, err } = post(api, _data)
-    if (err.value != null) update(data.value)
-}
-// table
+// main table
 import type { Column } from 'element-plus';
+const companyData = ref([])
 const column: Array<Column> = reactive([
     { prop: 'ID', label: 'ID', width: 0 },
     { prop: 'Name', label: '公司名称', width: 0 },
 ])
+const update = (_data: any) => { companyData.value = _data }
 // add company form
 const companyCol = reactive([{ label: "公司名称", prop: "Name", type: "string" }])
 const addCompanyVisible = ref(false)
+const addCompany = (_data: any) => dialogPost(api, _data, addCompanyVisible)
 
 onMounted(() => {
     const { data, err } = get(api)

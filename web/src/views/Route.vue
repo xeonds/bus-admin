@@ -20,26 +20,23 @@
 
 <script lang="ts" setup>
 // data action
-import { http } from '@/utils/http';
-const { get, post } = http
+import { dialogPost, http } from '@/utils/http';
+const { get } = http
 const api = "/route"
-const routeData = ref([])
-const update = (_data: any) => { routeData.value = _data }
-const addRoute = (_data: any) => {
-    const { data, err } = post(api, _data)
-    if (err.value != null) update(data.value)
-}
-// table
+// main table
 import type { Column } from 'element-plus';
 const column: Array<Column> = reactive([
     { prop: 'ID', label: 'ID', width: 0 },
     { prop: 'VIN', label: '车牌号', width: 0 },
 ])
+const routeData = ref([])
+const update = (_data: any) => { routeData.value = _data }
 // add route form
 const routeCol = reactive([
     { label: "线路名称", prop: "Name", type: "string" },
     { label: "所属车队", prop: "Team", type: "string" }])
 const addRouteVisible = ref(false)
+const addRoute = (_data: any) => dialogPost(api, _data, addRouteVisible)
 
 onMounted(() => {
     const { data, err } = get(api)

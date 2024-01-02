@@ -29,18 +29,18 @@
         <el-dialog title="车队违章查询" v-model="queryTeamViolationVisible">
             <el-form :inline="true">
                 <el-form-item label="车队名称">
-                    <el-input v-model="driverName"></el-input>
+                    <el-input v-model="teamName"></el-input>
                 </el-form-item>
                 <el-form-item label="起止时间选择">
-                    <el-date-picker v-model="driverViolationTime" type="datetimerange" start-placeholder="Start date"
+                    <el-date-picker v-model="teamViolationTime" type="datetimerange" start-placeholder="Start date"
                         end-placeholder="End date" format="YYYY-MM-DD HH:mm:ss" date-format="YYYY/MM/DD ddd"
                         time-format="A hh:mm:ss" />
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="queryDriverViolation">查询</el-button>
+                    <el-button type="primary" @click="queryTeamViolation">查询</el-button>
                 </el-form-item>
             </el-form>
-            <el-table style="width:100%" :data="driverViolationRes">
+            <el-table style="width:100%" :data="teamViolationRes">
             </el-table>
         </el-dialog>
         <el-table>
@@ -58,7 +58,7 @@
 
 <script lang="ts" setup>
 // data action
-import { http } from '@/utils/http';
+import { dialogPost, http } from '@/utils/http';
 import { ElMessage, type Column } from 'element-plus';
 const { get, post } = http
 const api = "/violation"
@@ -83,10 +83,8 @@ const violationCol = reactive([
     { label: "违章时间", prop: "OccurredAt", type: "date" }])
 const insertViolationVisible = ref(false)
 const insertViolation = (_data: any) => {
-    const { err } = post(api, _data)
-    if (err.value != null) ElMessage.error(err.value)
-    else fetchViolationData()
-
+    if (dialogPost(api, _data, insertViolationVisible).value == null)
+        fetchViolationData()
 }
 // query violation of drivers
 const queryDriverViolationVisible = ref(false)
@@ -94,16 +92,21 @@ const driverViolationTime = ref('')
 const driverName = ref('')
 const driverViolationRes = ref([])
 const queryDriverViolation = () => {
-    const { data, err } = post('/query/violation/driver', { Name: driverName.value, Time: driverViolationTime.value })
-    if (err.value != null) {
-        ElMessage.error(err.value)
-        return
-    }
-    driverViolationRes.value = data.value as any
+    const { data, err } = post('query/violation/driver', { Name: driverName.value, Time: driverViolationTime.value })
+    if (err.value != null) { ElMessage.error(err.value) }
+    else driverViolationRes.value = data.value as any
 }
 
 //query violation of teams
 const queryTeamViolationVisible = ref(false)
+const teamViolationTime = ref('')
+const teamName = ref('')
+const teamViolationRes = ref([])
+const queryTeamViolation = () => {
+    const { data, err } = post('query/violation/team', { Name: teamName.value, Time: teamViolationTime.value })
+    if (err.value != null) { ElMessage.error(err.value) }
+    else teamViolationRes.value = data.value as any
+}
 
 onMounted(() => {
     fetchViolationData()

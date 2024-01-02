@@ -30,6 +30,15 @@ const useHttp = (baseUrl: string, token: string) => {
   return { get, post }
 }
 
-const baseUrl = '/api/v1/'
+const baseUrl = '/api/v1'
 
 export const http = useHttp(baseUrl, "")
+
+export const dialogPost = (api: string, _data: any, visibleRef: any) => {
+  const { post } = http
+  const { err } = post(api, _data)
+  if (err.value != null) ElMessage.error(err.value)
+  else ElMessage.success("添加成功")
+  visibleRef.value = false // 关闭弹窗
+  return err
+}

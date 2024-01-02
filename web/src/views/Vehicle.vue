@@ -20,27 +20,24 @@
 
 <script lang="ts" setup>
 // data action
-import { http } from '@/utils/http';
-const { get, post } = http
+import { http, dialogPost } from '@/utils/http';
+const { get } = http
 const api = "/vehicle"
-const vehicleData = ref([])
-const update = (_data: any) => { vehicleData.value = _data }
-const addVehicle = (_data: any) => {
-    const { data, err } = post(api, _data)
-    if (err.value != null) update(data.value)
-}
-// table
+// main table
 import type { Column } from 'element-plus';
+const vehicleData = ref([])
 const column: Array<Column> = reactive([
     { prop: 'ID', label: 'ID', width: 0 },
     { prop: 'VIN', label: '车牌号', width: 0 },
 ])
+const update = (_data: any) => { vehicleData.value = _data }
 // add vehicle form
 const vehicleCol = reactive([
     { label: "车牌号", prop: "VIN", type: "string" },
-    { label: "所属公司", prop: "company", type: "string" },
-    { label: "路线", prop: "route", type: "string" }])
+    { label: "所属公司", prop: "Company", type: "string" },
+    { label: "路线", prop: "Route", type: "string" }])
 const addVehicleVisible = ref(false)
+const addVehicle = (_data: any) => dialogPost(api, _data, addVehicleVisible)
 
 onMounted(() => {
     const { data, err } = get(api)
